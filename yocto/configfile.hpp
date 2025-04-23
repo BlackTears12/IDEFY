@@ -5,6 +5,7 @@
 
 namespace yocto {
 
+using std::unique_ptr;
 using std::vector;
 
 /* Represents a single assignment to a bitbake variable */
@@ -46,12 +47,12 @@ struct VariableAssignment
 
 struct Directive
 {
-    enum Type { Inherit, InheridDefer, Include, IncludeAll, Require, AddFragments };
+    enum Type { Export, Inherit, InheridDefer, Include, IncludeAll, Require, AddFragments };
 
     Type type;
     vector<QString> parameters;
 
-    Directive(Type t, const vector<QString> &params)
+    Directive(Type t, const vector<QString> params = {})
         : type(t)
         , parameters(params)
     {}
@@ -67,6 +68,15 @@ struct ConfigFile
     vector<VariableAssignment> varAssignments;
     vector<Script> scripts;
     vector<Directive> directives;
+
+    void addVariableAssignment(const VariableAssignment &assign)
+    {
+        varAssignments.push_back(assign);
+    }
+
+    void addScript(const Script &script) { scripts.push_back(script); }
+
+    void addDirective(const Directive &directive) { directives.push_back(directive); }
 };
 
 } // namespace yocto

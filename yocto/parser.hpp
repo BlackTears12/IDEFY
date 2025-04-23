@@ -35,10 +35,10 @@ public:
 
     Token next();
     Token peek(unsigned int skip = 0);
-    bool end() { return tokenIndex >= tokens.size(); }
+    void skipUntilNewline();
+    bool end() const { return tokenIndex >= tokens.size(); }
 
     void printTokens() const;
-
 private:
     void tokenizeLine(QString line);
 
@@ -58,11 +58,17 @@ class Parser
 public:
     Parser();
 
-    ConfigFile parseConfigFile(QString filename);
+    unique_ptr<ConfigFile> parseConfigFile(QString filename);
+
 private:
     VariableAssignment parseVarAssignment(Token token);
     Directive parseDirective(Token token);
     Script parseScript(Token token);
+
+    VariableAssignment::Type matchVarAssignmentType(const QString &assign) const;
+    VariableAssignment finalizeAssignment(const VariableAssignment &assign) const;
+
+    Directive::Type matchDirectiveType(const QString dir) const;
     std::unique_ptr<Tokenizer> tokenizer;
 };
 
