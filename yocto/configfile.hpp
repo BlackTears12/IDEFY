@@ -47,7 +47,7 @@ struct VariableAssignment
 
 struct Directive
 {
-    enum Type { Export, Inherit, InheridDefer, Include, IncludeAll, Require, AddFragments };
+    enum Type { Export, Inherit, InheritDefer, Include, IncludeAll, Require, AddFragments };
 
     Type type;
     vector<QString> parameters;

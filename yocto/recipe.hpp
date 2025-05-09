@@ -3,7 +3,6 @@
 
 #include <QString>
 #include "configfile.hpp"
-#include <vector>
 
 namespace yocto {
 
@@ -11,7 +10,7 @@ class Recipe
 {
 public:
 private:
-    ConfigFile content;
+    unique_ptr<ConfigFile> content;
 };
 
 } // namespace yocto

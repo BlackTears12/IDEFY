@@ -183,7 +183,7 @@ bool Tokenizer::isAssignOperator(QString val)
 
 bool Tokenizer::isDirectiveKeyword(QString val)
 {
-    return val == "python" || val == "inherit" || val == "inlcude";
+    return val == "python" || val == "inherit" || val == "include";
 }
 
 bool Tokenizer::isVariableName(QString val)
