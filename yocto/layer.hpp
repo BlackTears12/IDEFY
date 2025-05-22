@@ -2,23 +2,27 @@
 #define LAYER_HPP
 
 #include <QDir>
-#include "configfile.hpp"
+#include "metadata.hpp"
+#include "recipe.hpp"
 
 namespace yocto {
 
 class Layer
 {
 public:
-    Layer(const QDir &dir, unique_ptr<ConfigFile> layerConfig)
+    Layer(const QDir &dir, unique_ptr<MetadataFile> layerConfig)
         : layerDir(dir)
         , config(std::move(layerConfig))
     {}
 
     bool operator==(const Layer &layer) { return layer.layerDir == layerDir; }
 
+    QString getName() const { return config->getName(); }
+    QDir getDir() const { return layerDir; }
 private:
     QDir layerDir;
-    unique_ptr<ConfigFile> config;
+    vector<unique_ptr<Recipe>> recipes;
+    unique_ptr<MetadataFile> config;
 };
 
 } // namespace yocto

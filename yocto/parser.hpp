@@ -2,7 +2,7 @@
 #define PARSER_HPP
 
 #include <QFile>
-#include "configfile.hpp"
+#include "metadata.hpp"
 #include <memory>
 
 namespace yocto {
@@ -31,7 +31,7 @@ struct Token
 class Tokenizer
 {
 public:
-    Tokenizer(QString filename);
+    Tokenizer(QString filePath);
 
     Token next();
     Token peek(unsigned int skip = 0);
@@ -58,7 +58,7 @@ class Parser
 public:
     Parser();
 
-    unique_ptr<ConfigFile> parseConfigFile(QString filename);
+    unique_ptr<MetadataFile> parseConfigFile(QString filePath);
 
 private:
     VariableAssignment parseVarAssignment(Token token);

@@ -1,16 +1,15 @@
 #ifndef RECIPE_HPP
 #define RECIPE_HPP
 
+#include <QObject>
 #include <QString>
-#include "configfile.hpp"
+#include "metadata.hpp"
 
 namespace yocto {
 
-class Recipe
-{
-public:
-private:
-    unique_ptr<ConfigFile> content;
+class Recipe : public MetadataFile
+{   
+
 };
 
 } // namespace yocto

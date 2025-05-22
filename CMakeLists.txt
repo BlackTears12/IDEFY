@@ -10,32 +10,48 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 include_directories(yocto view util core)
 
+
 set(PROJECT_SOURCES
         main.cpp        
         yocto/parser.hpp
         yocto/parser.cpp
         yocto/recipe.hpp
         yocto/layer.hpp
-        yocto/configfile.hpp
+        yocto/metadata.hpp
         yocto/yoctoengine.hpp
         yocto/yoctoengine.cpp
         util/pathmatcher.hpp
         util/pathmatcher.cpp
         core/application.hpp
         core/application.cpp
+        core/metatypes.hpp
+        core/qmlsingleton.hpp
 )
 
 qt_add_executable(IDEFY
     ${PROJECT_SOURCES}
 )
 
+set_source_files_properties(core/layermodel.hpp core/layermodel.cpp PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
+set_source_files_properties(qml/Colors.qml qml/Constants.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 qt_add_qml_module(IDEFY
-    URI IDEFY
+    URI idefy
     VERSION 1.0
     QML_FILES
-        qml/WindowDragHandler.qml
+        qml/qmldir
+        qml/qtquickcontrols2.conf
+        qml/Colors.qml
+        qml/Constants.qml
+        qml/LayerExplorerView.qml
+        qml/MainScreen.qml
         qml/Editor.qml
-        qml/FileSystemView.qml
+        qml/App.qml
+    SOURCES
+        core/layermodel.hpp core/layermodel.cpp
+    RESOURCES
+        qml/qmldir
 )
 
 

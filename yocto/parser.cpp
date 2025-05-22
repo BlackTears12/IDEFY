@@ -5,10 +5,10 @@ namespace yocto {
 
 Parser::Parser() {}
 
-unique_ptr<ConfigFile> Parser::parseConfigFile(QString filename)
+unique_ptr<MetadataFile> Parser::parseConfigFile(QString filePath)
 {
-    tokenizer = std::make_unique<Tokenizer>(filename);
-    auto config = std::make_unique<ConfigFile>();
+    tokenizer = std::make_unique<Tokenizer>(filePath);
+    auto config = std::make_unique<MetadataFile>(filePath);
     while (!tokenizer->end()) {
         auto tok = tokenizer->next();
         switch (tok.type) {
@@ -90,10 +90,10 @@ Directive::Type Parser::matchDirectiveType(const QString dir) const
     return Directive::Include;
 }
 
-Tokenizer::Tokenizer(QString filename)
+Tokenizer::Tokenizer(QString filePath)
     : tokenIndex(0)
 {
-    QFile inputFile(filename);
+    QFile inputFile(filePath);
     if (inputFile.open(QIODevice::ReadOnly)) {
         QTextStream in(&inputFile);
         QString logicalLine = "";

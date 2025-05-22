@@ -1,16 +1,14 @@
 // Copyright (C) 2023 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
-
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import FileSystemModule
-
+import IDEFY
 pragma ComponentBehavior: Bound
 
-// This is the text editor that displays the currently open file, including
-// their corresponding line numbers.
-Rectangle {
+                          // This is the text editor that displays the currently open file, including
+                          // their corresponding line numbers.
+                          Rectangle {
     id: root
 
     required property string currentFilePath
@@ -21,9 +19,8 @@ Rectangle {
 
     color: Colors.background
 
-    onWidthChanged: textArea.update()
-    onHeightChanged: textArea.update()
-
+    //onWidthChanged: textArea.update()
+    //onHeightChanged: textArea.update()
     RowLayout {
         anchors.fill: parent
         // We use a flickable to synchronize the position of the editor and
@@ -34,7 +31,9 @@ Rectangle {
 
             // Calculate the width based on the logarithmic scale.
             Layout.preferredWidth: fontMetrics.averageCharacterWidth
-                * (Math.floor(Math.log10(textArea.lineCount)) + 1) + 10
+                                   * (Math.floor(
+                                          Math.log10(
+                                              textArea.lineCount)) + 1) + 10
             Layout.fillHeight: true
             Layout.fillWidth: false
 
@@ -47,8 +46,23 @@ Rectangle {
                 Repeater {
                     id: repeatedLineNumbers
 
-                    model: LineNumberModel {
+
+                    /*model: LineNumberModel {
                         lineCount: textArea.text !== "" ? textArea.lineCount : 0
+                    }*/
+                    model: ListModel {
+                        ListElement {
+                            index: 0
+                        }
+                        ListElement {
+                            index: 1
+                        }
+                        ListElement {
+                            index: 2
+                        }
+                        ListElement {
+                            index: 3
+                        }
                     }
 
                     delegate: Item {
@@ -66,8 +80,9 @@ Rectangle {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
 
-                            color: (root.currentLineNumber === parent.index)
-                                    ? Colors.iconIndicator : Qt.darker(Colors.text, 2)
+                            color: (root.currentLineNumber
+                                    === parent.index) ? Colors.iconIndicator : Qt.darker(
+                                                            Colors.text, 2)
                             font: textArea.font
                         }
                         Rectangle {
@@ -96,7 +111,8 @@ Rectangle {
                     implicitWidth: scrollBar.interactive ? 8 : 4
                     implicitHeight: scrollBar.interactive ? 8 : 4
 
-                    opacity: scrollBar.active && scrollBar.size < 1.0 ? 1.0 : 0.0
+                    opacity: scrollBar.active
+                             && scrollBar.size < 1.0 ? 1.0 : 0.0
                     color: Colors.background
                     Behavior on opacity {
                         OpacityAnimator {
@@ -107,7 +123,8 @@ Rectangle {
                 contentItem: Rectangle {
                     implicitWidth: scrollBar.interactive ? 8 : 4
                     implicitHeight: scrollBar.interactive ? 8 : 4
-                    opacity: scrollBar.active && scrollBar.size < 1.0 ? 1.0 : 0.0
+                    opacity: scrollBar.active
+                             && scrollBar.size < 1.0 ? 1.0 : 0.0
                     color: Colors.color1
                     Behavior on opacity {
                         OpacityAnimator {
@@ -132,15 +149,17 @@ Rectangle {
                 topPadding: 0
                 leftPadding: 10
 
-                text: FileSystemModel.readFile(root.currentFilePath)
+                //text: FileSystemModel.readFile(root.currentFilePath)
+                text: "THIS\nIS\nTEST\nTEXT"
                 tabStopDistance: fontMetrics.averageCharacterWidth * 4
 
                 // Grab the current line number from the C++ interface.
-                onCursorPositionChanged: {
+
+
+                /*onCursorPositionChanged: {
                     root.currentLineNumber = FileSystemModel.currentLineNumber(
                         textArea.textDocument, textArea.cursorPosition)
-                }
-
+                }*/
                 color: Colors.textFile
                 selectedTextColor: Colors.textFile
                 selectionColor: Colors.selection

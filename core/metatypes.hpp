@@ -1,0 +1,5 @@
+#ifndef METATYPES_HPP
+#define METATYPES_HPP
+
+
+#endif // METATYPES_HPP

@@ -2,6 +2,7 @@
 #define APPLICATION_HPP
 
 #include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 namespace core {
 
@@ -12,6 +13,9 @@ public:
     Application(int &argc,char** argv);
 
     int exec();
+private:
+    QQmlApplicationEngine qmlEngine;
+
 };
 
 }

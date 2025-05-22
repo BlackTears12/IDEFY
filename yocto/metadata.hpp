@@ -1,12 +1,14 @@
-#ifndef CONFIGFILE_HPP
-#define CONFIGFILE_HPP
+#ifndef METADATA_H
+#define METADATA_H
 
+#include <QFileInfo>
 #include <QString>
 
-namespace yocto {
-
 using std::unique_ptr;
+using std::shared_ptr;
 using std::vector;
+
+namespace yocto {
 
 /* Represents a single assignment to a bitbake variable */
 struct VariableAssignment
@@ -63,11 +65,32 @@ struct Script
     enum Type { Bash, Python, BitbakeStylePython, AnonymousPython };
 };
 
-struct ConfigFile
+class MetadataFile
 {
-    vector<VariableAssignment> varAssignments;
-    vector<Script> scripts;
-    vector<Directive> directives;
+public:
+    enum Type { Recipe,RecipeAppend,Class,Configuration,KernelFragment };
+
+    explicit MetadataFile(QString path) : filePath(path)
+    {
+        QFileInfo fileInfo(filePath);
+        auto suffix = fileInfo.completeSuffix();
+        if(suffix == "bb")
+            type = Recipe;
+        if(suffix == "bbappend")
+            type = RecipeAppend;
+        if(suffix == "class")
+            type = Class;
+        if(suffix == "cfg")
+            type = KernelFragment;
+    }
+
+    virtual QString getPath() const { return filePath; }
+
+    virtual QString getName() const
+    {
+        QFileInfo fileInfo(filePath);
+        return fileInfo.fileName();
+    }
 
     void addVariableAssignment(const VariableAssignment &assign)
     {
@@ -77,8 +100,15 @@ struct ConfigFile
     void addScript(const Script &script) { scripts.push_back(script); }
 
     void addDirective(const Directive &directive) { directives.push_back(directive); }
+protected:
+    vector<VariableAssignment> varAssignments;
+    vector<Script> scripts;
+    vector<Directive> directives;
+    QString filePath;
+    Type type;
+
 };
 
 } // namespace yocto
 
-#endif // CONFIGFILE_HPP
+#endif // METADATA_H
