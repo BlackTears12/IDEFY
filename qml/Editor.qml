@@ -3,7 +3,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import IDEFY
+import idefy
 pragma ComponentBehavior: Bound
 
                           // This is the text editor that displays the currently open file, including

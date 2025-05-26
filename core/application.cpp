@@ -12,7 +12,7 @@ int Application::exec()
     QGuiApplication::setApplicationName("IDEFY");
     QGuiApplication::setApplicationVersion(QT_VERSION_STR);
 
-    qmlEngine.loadFromModule("IDEFY", "App");
+    qmlEngine.loadFromModule("idefy", "App");
     if (qmlEngine.rootObjects().isEmpty())
         return -1;
 

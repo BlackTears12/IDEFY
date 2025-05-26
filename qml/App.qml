@@ -1,5 +1,5 @@
 import QtQuick
-import IDEFY
+import idefy
 
 Window {
     width: mainScreen.width

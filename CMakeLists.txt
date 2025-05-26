@@ -48,6 +48,7 @@ qt_add_qml_module(IDEFY
         qml/MainScreen.qml
         qml/Editor.qml
         qml/App.qml
+        qml/Sidebar.qml
     SOURCES
         core/layermodel.hpp core/layermodel.cpp
     RESOURCES
