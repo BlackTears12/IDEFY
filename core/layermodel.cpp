@@ -32,9 +32,27 @@ QHash<int, QByteArray> LayerModel::roleNames() const
     };
 }
 
-void LayerModel::setWorkspace(QDir dir)
+QModelIndex LayerModel::index(int row, int column, const QModelIndex &parent) const
 {
+    return QAbstractItemModel::createIndex(row,column);
+}
 
+QModelIndex LayerModel::parent(const QModelIndex &child) const
+{
+    return QAbstractItemModel::createIndex(child.row(),0);
+}
+
+int LayerModel::columnCount(const QModelIndex &parent) const
+{
+    return 2;
+}
+
+void LayerModel::setLayers(vector<unique_ptr<Layer> > &&newLayers)
+{
+    beginResetModel();
+    layers = std::move(newLayers);
+    endResetModel();
+    qDebug() << rowCount();
 }
 
 LayerModel::LayerModel()

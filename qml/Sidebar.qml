@@ -85,7 +85,7 @@ Rectangle {
             // Shows help text when clicked.
             SidebarEntry {
                 id: infoTab
-                icon.source: "../icons/light_bulb.svg"
+                //icon.source: "../icons/light_bulb.svg"
                 checkable: true
                 checked: true
             }
@@ -94,7 +94,7 @@ Rectangle {
             SidebarEntry {
                 id: filesystemTab
 
-                icon.source: "../icons/read.svg"
+                //icon.source: "../icons/read.svg"
                 checkable: true
             }
         }
@@ -105,9 +105,9 @@ Rectangle {
             Layout.fillWidth: true
 
             // Make the empty space drag our main window.
-            /*WindowDragHandler {
+            WindowDragHandler {
                 dragWindow: root.dragWindow
-            }*/
+            }
         }
 
         TabBar {
@@ -117,7 +117,7 @@ Rectangle {
             // Opens the Qt website in the system's web browser.
             SidebarEntry {
                 id: qtWebsiteButton
-                icon.source: "../icons/globe.svg"
+                //icon.source: "../icons/globe.svg"
                 checkable: false
                 onClicked: Qt.openUrlExternally("https://www.qt.io/")
             }
@@ -126,7 +126,7 @@ Rectangle {
             SidebarEntry {
                 id: aboutQtButton
 
-                icon.source: "../icons/info_sign.svg"
+                //icon.source: "../icons/info_sign.svg"
                 checkable: false
                 onClicked: aboutQtWindow.visible = !aboutQtWindow.visible
             }

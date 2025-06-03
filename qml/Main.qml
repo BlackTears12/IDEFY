@@ -1,20 +1,78 @@
-
-
-/*
-This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
-It is supposed to be strictly declarative and only uses a subset of QML. If you edit
-this file manually, you might introduce QML code that is not supported by Qt Design Studio.
-Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
-*/
+import QtCore
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import QtQuick.Dialogs
 import idefy
 
-Rectangle {
-    id: rectangle
+pragma ComponentBehavior: Bound
+
+ApplicationWindow {
+    id: root
+
+    property bool showLineNumbers: true
+    property string currentFilePath: "File"
+
+    visible: true
+    title: "IDEFY"
+
+    color: Colors.background
+    flags: Qt.Window | Qt.FramelessWindowHint
+
     width: Constants.width
     height: Constants.height
+
+    menuBar: MyMenuBar {
+        dragWindow: root
+        infoText: "IDEFY"
+        MyMenu {
+            title: qsTr("File")
+
+            Action {
+                text: "Open Layer"
+                shortcut: StandardKey.Open
+                onTriggered: workspaceDialog.open()
+            }
+            Action {
+                text: qsTr("Increase Font")
+                shortcut: StandardKey.ZoomIn
+                onTriggered: editor.text.font.pixelSize += 1
+            }
+            Action {
+                text: qsTr("Decrease Font")
+                shortcut: StandardKey.ZoomOut
+                onTriggered: editor.text.font.pixelSize -= 1
+            }
+            Action {
+                text: root.showLineNumbers ? qsTr("Toggle Line Numbers OFF")
+                                           : qsTr("Toggle Line Numbers ON")
+                shortcut: "Ctrl+L"
+                onTriggered: root.showLineNumbers = !root.showLineNumbers
+            }
+            Action {
+                text: root.expandPath ? qsTr("Toggle Short Path")
+                                      : qsTr("Toggle Expand Path")
+                enabled: root.currentFilePath
+                onTriggered: root.expandPath = !root.expandPath
+            }
+            Action {
+                text: qsTr("Reset Filesystem")
+                enabled: sidebar.currentTabIndex === 1
+                onTriggered: fileSystemView.rootIndex = undefined
+            }
+            Action {
+                text: qsTr("Exit")
+                onTriggered: Qt.exit(0)
+                shortcut: StandardKey.Quit
+            }
+        }
+    }
+
+    FolderDialog {
+        id: workspaceDialog
+        currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
+        onAccepted: YoctoEngine.tryToSetYoctoRoot(currentFolder)
+    }
 
     RowLayout {
             anchors.fill: parent
@@ -57,16 +115,6 @@ Rectangle {
                         anchors.fill: parent
                         currentIndex: sidebar.currentTabIndex
 
-                        // Shows the help text.
-                        Text {
-                            text: qsTr("This example shows how to use and visualize the file system.\n\n"
-                                     + "Customized Qt Quick Components have been used to achieve this look.\n\n"
-                                     + "You can edit the files but they won't be changed on the file system.\n\n"
-                                     + "Click on the folder icon to the left to get started.")
-                            wrapMode: TextArea.Wrap
-                            color: Colors.text
-                        }
-
                         // Shows the files on the file system.
                         LayerExplorerView {
                             id: layerExplorerView
@@ -85,5 +133,6 @@ Rectangle {
                     SplitView.fillHeight: true
                 }
             }
-        }
+    }
 }
+

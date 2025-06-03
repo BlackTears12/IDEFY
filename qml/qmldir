@@ -1,3 +1,14 @@
-module IDEFY
-singleton Constants 1.0 Constants.qml
+module idefy
+
+# Standard QML components
+Main 1.0 Main.qml # <-- THIS LINE IS ESSENTIAL!
+LayerExplorerView 1.0 LayerExplorerView.qml
+MyMenuBar 1.0 MyMenuBar.qml
+Editor 1.0 Editor.qml
+Sidebar 1.0 Sidebar.qml
+MyMenu 1.0 MyMenu.qml
+WindowDragHandler 1.0 WindowDragHandler.qml # Assuming this is a QML file as well
+
+# Singleton QML types
 singleton Colors 1.0 Colors.qml
+singleton Constants 1.0 Constants.qml

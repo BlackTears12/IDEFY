@@ -18,6 +18,7 @@ namespace qml
 template <typename T>
 struct InstanceCreator : public T
 {
+    InstanceCreator() = default;
     static T* create() { return new InstanceCreator<T>(); }
 };
 

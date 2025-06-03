@@ -1,22 +1,67 @@
 #include "yoctoengine.hpp"
+#include "application.hpp"
+#include "layermodel.hpp"
+#include "alertmanager.hpp"
+#include "parser.hpp"
+
+#include <QDirIterator>
 
 namespace yocto {
 
-void YoctoEngine::setYoctoRoot(const QDir &root)
+void YoctoEngine::tryToSetYoctoRoot(const QString &rootDir)
 {
-    rootDir = root;
+    QDir root(rootDir);
+    auto subDirs = root.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    if(!subDirs.contains("poky")) {
+        util::AlertManager::notifyYoctoRootChangeFailed();
+        return;
+    }
+
+    this->rootDir = root;
+    core::Application::Instance().getLayerModel().setLayers(findLocalLayers());
+    util::AlertManager::notifyYoctoRootChangeSuccessfull();
 }
 
-void YoctoEngine::Init(const QDir &yoctoRootDir)
+vector<unique_ptr<Layer>> YoctoEngine::findLocalLayers() const
 {
-    instance.setYoctoRoot(yoctoRootDir);
-}
+    QDirIterator it(rootDir, QDirIterator::Subdirectories);
+    QStringList layerDirs;
 
-constexpr YoctoEngine &YoctoEngine::Instance()
-{
-    return instance;
-}
+    auto layerConfigFilePath = [](const QString &dirPath){
+        return QDir::cleanPath(dirPath + QDir::separator() + "conf" + QDir::separator() + "layer.conf");
+    };
 
-YoctoEngine YoctoEngine::instance = {};
+    auto isLayerDir = [](QString path){
+        auto dirName = QDir(path).dirName();
+        if(dirName == "poky")
+            return true;
+        return dirName.startsWith("meta");
+    };
+
+    std::function<void(const QString&)> descendIntoSubdir = [&layerConfigFilePath,&isLayerDir,&layerDirs, &descendIntoSubdir](const QString &dir) {
+        if (QFile::exists(layerConfigFilePath(dir))) {
+            layerDirs.append(dir);
+        }
+        auto subDirs = QDir(dir).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for(auto &subDir : subDirs) {
+            auto path = QDir::cleanPath(dir + QDir::separator() + subDir);
+            if(isLayerDir(path)) {
+                descendIntoSubdir(path);
+            }
+        }
+    };
+
+    descendIntoSubdir(rootDir.absolutePath());
+
+    Parser parser;
+    vector<unique_ptr<Layer>> layers;
+    for(auto &dir : layerDirs) {
+        layers.push_back(
+            std::make_unique<Layer>(dir,parser.parseConfigFile(layerConfigFilePath(dir)))
+        );
+    }
+    return layers;
+}
 
 } // namespace yocto

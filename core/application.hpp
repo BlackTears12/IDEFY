@@ -1,6 +1,9 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "layermodel.hpp"
+#include "yoctoengine.hpp"
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -10,12 +13,18 @@ class Application : public QGuiApplication
 {
     Q_OBJECT
 public:
+    int exec();
+    LayerModel& getLayerModel();
+    yocto::YoctoEngine& getYoctoEngine();
+private:
     Application(int &argc,char** argv);
 
-    int exec();
-private:
     QQmlApplicationEngine qmlEngine;
-
+public:
+    static void Init(int argc,char** argv);
+    static Application& Instance();
+private:
+    static unique_ptr<Application> instance;
 };
 
 }

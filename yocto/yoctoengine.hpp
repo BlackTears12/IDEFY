@@ -3,26 +3,23 @@
 
 #include <QDir>
 #include "layer.hpp"
+#include "qmlsingleton.hpp"
 
 namespace yocto {
 
-class YoctoEngine
+class YoctoEngine : public QObject, public qml::QmlSingleton<YoctoEngine>
 {
+    Q_OBJECT
+    QML_NAMED_SINGLETON(YoctoEngine)
 public:
-    Layer *registerLayer(const QDir &layerRoot);
+    Q_INVOKABLE void tryToSetYoctoRoot(const QString &rootDir);
 
-private:
-    void setYoctoRoot(const QDir &root);
+protected:
+    YoctoEngine() = default;
+
+    vector<unique_ptr<Layer>> findLocalLayers() const;
 
     QDir rootDir;
-    vector<std::unique_ptr<Layer>> layers;
-
-public:
-    static void Init(const QDir &yoctoRootDir);
-    static constexpr YoctoEngine &Instance();
-
-private:
-    static YoctoEngine instance;
 };
 
 } // namespace yocto

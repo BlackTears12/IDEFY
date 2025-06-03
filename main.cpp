@@ -4,6 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-    core::Application app(argc,argv);
-    return app.exec();
+    core::Application::Init(argc,argv);
+    return core::Application::Instance().exec();
 }

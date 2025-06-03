@@ -52,7 +52,7 @@ Rectangle {
 
                 x: treeDelegate.leftMargin + (treeDelegate.depth * treeDelegate.indentation)
                 anchors.verticalCenter: parent.verticalCenter
-                source: treeDelegate.hasChildren ? (treeDelegate.expanded ? "../icons/folder_open.svg" : "../icons/folder_closed.svg") : "../icons/generic_file.svg"
+                //source: treeDelegate.hasChildren ? (treeDelegate.expanded ? "../icons/folder_open.svg" : "../icons/folder_closed.svg") : "../icons/generic_file.svg"
                 sourceSize.width: 20
                 sourceSize.height: 20
                 fillMode: Image.PreserveAspectFit
@@ -63,7 +63,8 @@ Rectangle {
             }
 
             contentItem: Text {
-                text: treeDelegate.name
+                //text: treeDelegate.name
+                text: treeDelegate.path
                 color: Colors.text
             }
 
@@ -108,8 +109,8 @@ Rectangle {
                 onSingleTapped: (eventPoint, button) => {
                                     switch (button) {
                                         case Qt.LeftButton:
-                                            fileSystemTreeView.toggleExpanded(treeDelegate.row)
-                                            fileSystemTreeView.lastIndex = treeDelegate.index
+                                            layerExplorerTree.toggleExpanded(treeDelegate.row)
+                                            layerExplorerTree.lastIndex = treeDelegate.index
                                             // If this model item doesn't have children, it means it's
                                             // representing a file.
                                             if (!treeDelegate.hasChildren)

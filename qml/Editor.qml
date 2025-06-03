@@ -4,11 +4,12 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import idefy
+
 pragma ComponentBehavior: Bound
 
-                          // This is the text editor that displays the currently open file, including
-                          // their corresponding line numbers.
-                          Rectangle {
+// This is the text editor that displays the currently open file, including
+// their corresponding line numbers.
+Rectangle {
     id: root
 
     required property string currentFilePath
@@ -19,8 +20,8 @@ pragma ComponentBehavior: Bound
 
     color: Colors.background
 
-    //onWidthChanged: textArea.update()
-    //onHeightChanged: textArea.update()
+    onWidthChanged: textArea.update()
+    onHeightChanged: textArea.update()
     RowLayout {
         anchors.fill: parent
         // We use a flickable to synchronize the position of the editor and
@@ -47,22 +48,8 @@ pragma ComponentBehavior: Bound
                     id: repeatedLineNumbers
 
 
-                    /*model: LineNumberModel {
+                    model: LineNumberModel {
                         lineCount: textArea.text !== "" ? textArea.lineCount : 0
-                    }*/
-                    model: ListModel {
-                        ListElement {
-                            index: 0
-                        }
-                        ListElement {
-                            index: 1
-                        }
-                        ListElement {
-                            index: 2
-                        }
-                        ListElement {
-                            index: 3
-                        }
                     }
 
                     delegate: Item {
@@ -149,17 +136,16 @@ pragma ComponentBehavior: Bound
                 topPadding: 0
                 leftPadding: 10
 
-                //text: FileSystemModel.readFile(root.currentFilePath)
-                text: "THIS\nIS\nTEST\nTEXT"
+                text: FileUtil.readFile(root.currentFilePath)
                 tabStopDistance: fontMetrics.averageCharacterWidth * 4
 
                 // Grab the current line number from the C++ interface.
 
 
-                /*onCursorPositionChanged: {
-                    root.currentLineNumber = FileSystemModel.currentLineNumber(
+                onCursorPositionChanged: {
+                    root.currentLineNumber = FileUtil.currentLineNumber(
                         textArea.textDocument, textArea.cursorPosition)
-                }*/
+                }
                 color: Colors.textFile
                 selectedTextColor: Colors.textFile
                 selectionColor: Colors.selection
