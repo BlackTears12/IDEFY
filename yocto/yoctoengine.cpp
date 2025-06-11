@@ -19,11 +19,11 @@ void YoctoEngine::tryToSetYoctoRoot(const QString &rootDir)
     }
 
     this->rootDir = root;
-    core::Application::Instance().getLayerModel().setLayers(findLocalLayers());
+    core::Application::Instance().getLayerModel().setWorkspaceLayer(createWorkspaceLayer());
     util::AlertManager::notifyYoctoRootChangeSuccessfull();
 }
 
-vector<unique_ptr<Layer>> YoctoEngine::findLocalLayers() const
+vector<unique_ptr<Layer>> YoctoEngine::createWorkspaceLayer() const
 {
     QDirIterator it(rootDir, QDirIterator::Subdirectories);
     QStringList layerDirs;
@@ -58,10 +58,10 @@ vector<unique_ptr<Layer>> YoctoEngine::findLocalLayers() const
     vector<unique_ptr<Layer>> layers;
     for(auto &dir : layerDirs) {
         layers.push_back(
-            std::make_unique<Layer>(dir,parser.parseConfigFile(layerConfigFilePath(dir)))
+            Layer::createConcreteLayer(dir,parser.parseConfigFile(layerConfigFilePath(dir)))
         );
     }
-    return layers;
+    return Layer::createSuperLayer(rootDir,std::move(layers));
 }
 
 } // namespace yocto

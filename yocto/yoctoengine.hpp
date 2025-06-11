@@ -17,7 +17,7 @@ public:
 protected:
     YoctoEngine() = default;
 
-    vector<unique_ptr<Layer>> findLocalLayers() const;
+    unique_ptr<Layer> createWorkspaceLayer() const;
 
     QDir rootDir;
 };
