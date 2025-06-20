@@ -37,21 +37,21 @@ qt_add_executable(IDEFY
     ${PROJECT_SOURCES}
 )
 
-set_source_files_properties(qml/Colors.qml qml/Constants.qml ${SINGLETON_SOURCES} PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+set_source_files_properties(idefy-qml/Colors.qml idefy-qml/Constants.qml ${SINGLETON_SOURCES} PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 
 qt_add_qml_module(IDEFY
-    URI idefy
+    URI idefy-qml
     VERSION 1.0
     QML_FILES
-        qml/Main.qml
-        qml/Colors.qml
-        qml/Constants.qml
-        qml/LayerExplorerView.qml
-        qml/MyMenuBar.qml
-        qml/Editor.qml
-        qml/Sidebar.qml
-        qml/MyMenu.qml
-        qml/WindowDragHandler.qml
+        idefy-qml/Main.qml
+        idefy-qml/Colors.qml
+        idefy-qml/Constants.qml
+        idefy-qml/LayerExplorerView.qml
+        idefy-qml/MyMenuBar.qml
+        idefy-qml/Editor.qml
+        idefy-qml/Sidebar.qml
+        idefy-qml/MyMenu.qml
+        idefy-qml/WindowDragHandler.qml
 
     SOURCES
         ${SINGLETON_SOURCES}
