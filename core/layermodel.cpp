@@ -7,7 +7,7 @@ int LayerModel::rowCount(const QModelIndex &parent) const
     if(!workspaceLayer)
         return 0;
 
-    if(!parent.isValid()) {
+    if(!parent.isValid() || parent.constInternalPointer() == nullptr) {
         return workspaceLayer->childLayerCount();
     }
 
@@ -31,6 +31,7 @@ QVariant LayerModel::data(const QModelIndex &index, int role) const
         return {};
 
     Layer *layer = static_cast<Layer*>(index.internalPointer());
+    qDebug() << layer;
     if (!layer)
         return {};
 
@@ -79,6 +80,7 @@ void LayerModel::setWorkspaceLayer(unique_ptr<Layer> wsLayer)
 {
     beginResetModel();
     workspaceLayer = std::move(wsLayer);
+    qDebug() << workspaceLayer->childLayerCount();
     endResetModel();
 }
 

@@ -23,9 +23,8 @@ void YoctoEngine::tryToSetYoctoRoot(const QString &rootDir)
     util::AlertManager::notifyYoctoRootChangeSuccessfull();
 }
 
-vector<unique_ptr<Layer>> YoctoEngine::createWorkspaceLayer() const
+unique_ptr<Layer> YoctoEngine::createWorkspaceLayer() const
 {
-    QDirIterator it(rootDir, QDirIterator::Subdirectories);
     QStringList layerDirs;
 
     auto layerConfigFilePath = [](const QString &dirPath){

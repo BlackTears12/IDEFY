@@ -1,0 +1,13 @@
+module idefy-qml
+
+Main 1.0 Main.qml
+LayerExplorerView 1.0 LayerExplorerView.qml
+MyMenuBar 1.0 MyMenuBar.qml
+Editor 1.0 Editor.qml
+Sidebar 1.0 Sidebar.qml
+MyMenu 1.0 MyMenu.qml
+WindowDragHandler 1.0 WindowDragHandler.qml
+
+# Singleton QML types
+singleton Colors 1.0 Colors.qml
+singleton Constants 1.0 Constants.qml

@@ -19,10 +19,10 @@ public:
 
     bool operator==(const Layer &layer) { return layer.layerDir == layerDir; }
 
-    constexpr bool isConcreteLayer() const { return config != nullptr; }
-    constexpr bool isSuperLayer() const { return !childLayers.empty(); }
-    constexpr int recipeCount() const { return recipes.size(); }
-    constexpr int childLayerCount() const { return childLayers.size(); }
+    bool isConcreteLayer() const { return config.get() != nullptr; }
+    bool isSuperLayer() const { return !childLayers.empty(); }
+    int recipeCount() const { return recipes.size(); }
+    int childLayerCount() const { return childLayers.size(); }
 
     QString getName() const { return layerDir.dirName(); }
     QDir getDir() const { return layerDir; }
@@ -40,7 +40,7 @@ protected:
 
 public:
     static unique_ptr<Layer> createConcreteLayer(const QDir &dir, unique_ptr<MetadataFile> layerConfig) { return std::make_unique<Layer>(dir,std::move(layerConfig)); }
-    static unique_ptr<Layer> createSuperLayer(const QDir &dir, vector<unique_ptr<Layer>> children) { return std::make_unique<Layer>(dir,nullptr, children); }
+    static unique_ptr<Layer> createSuperLayer(const QDir &dir, vector<unique_ptr<Layer>> children) { return std::make_unique<Layer>(dir,nullptr, std::move(children)); }
 };
 
 
